@@ -112,6 +112,152 @@ paths:
                           type: integer
                         timestamp:
                           type: string
+  /accounts/{idOrAliasOrEvmAddress}/airdrops/outstanding:
+    get:
+      operationId: fetchOutstandingAirdrops
+      summary: Retrieve outstanding token airdrops.
+      description: Fetches the list of outstanding token airdrops for a given blockchain account on the Hedera network.
+      parameters:
+        - name: idOrAliasOrEvmAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of outstanding airdrops.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  airdrops:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        token_id:
+                          type: string
+                        amount:
+                          type: integer
+  /accounts/{idOrAliasOrEvmAddress}/airdrops/pending:
+    get:
+      operationId: fetchPendingAirdrops
+      summary: Retrieve pending token airdrops.
+      description: Fetches the list of pending token airdrops for a given blockchain account on the Hedera network.
+      parameters:
+        - name: idOrAliasOrEvmAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of pending airdrops.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  airdrops:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        token_id:
+                          type: string
+                        amount:
+                          type: integer
+  /accounts/{idOrAliasOrEvmAddress}/allowances/tokens:
+    get:
+      operationId: fetchTokenAllowances
+      summary: Retrieve granted token allowances.
+      description: Retrieves information about token allowances granted by a blockchain account on the Hedera network.
+      parameters:
+        - name: idOrAliasOrEvmAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of granted token allowances.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  allowances:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        token_id:
+                          type: string
+                        spender:
+                          type: string
+                        amount:
+                          type: integer
+  /accounts/{idOrAliasOrEvmAddress}/allowances/nfts:
+    get:
+      operationId: fetchNftAllowances
+      summary: Retrieve granted NFT allowances.
+      description: Retrieves information about NFT allowances granted by a blockchain account on the Hedera network.
+      parameters:
+        - name: idOrAliasOrEvmAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of granted NFT allowances.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  allowances:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        token_id:
+                          type: string
+                        spender:
+                          type: string
+                        serial_numbers:
+                          type: array
+                          items:
+                            type: integer
+  /accounts/{idOrAliasOrEvmAddress}/nfts:
+    get:
+      operationId: fetchOwnedNfts
+      summary: Retrieve NFTs owned by a blockchain account.
+      description: Fetches a list of NFTs associated with a given blockchain account on the Hedera network.
+      parameters:
+        - name: idOrAliasOrEvmAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of owned NFTs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nfts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        token_id:
+                          type: string
+                        serial_number:
+                          type: integer
   /balances:
     get:
       operationId: fetchBlockchainBalances
@@ -158,6 +304,30 @@ paths:
                           type: string
                         symbol:
                           type: string
+  /tokens/balances:
+    get:
+      operationId: fetchTokenBalances
+      summary: Retrieve token balances across accounts.
+      description: Fetches a list of token balances across multiple blockchain accounts on the Hedera network.
+      responses:
+        "200":
+          description: List of token balances.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token_balances:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        account:
+                          type: string
+                        token_id:
+                          type: string
+                        balance:
+                          type: integer
   /tokens/{id}:
     get:
       operationId: fetchTokenInfo
@@ -262,3 +432,185 @@ paths:
                           type: string
                         type:
                           type: string
+  /topics/{topicId}:
+    get:
+      operationId: fetchTopicDetails
+      summary: Retrieve details for a specific topic.
+      description: Fetches public details for a given topic ID on the Hedera network.
+      parameters:
+        - name: topicId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Topic details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  topic_id:
+                    type: string
+                  memo:
+                    type: string
+                  admin_key:
+                    type: string
+                  submit_key:
+                    type: string
+                  running_hash:
+                    type: string
+                  expiration_time:
+                    type: string
+  /topics/{topicId}/messages:
+    get:
+      operationId: fetchTopicMessages
+      summary: Retrieve messages for a specific topic.
+      description: Retrieves a list of messages associated with a given topic on the Hedera network.
+      parameters:
+        - name: topicId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of topic messages.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messages:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        sequence_number:
+                          type: integer
+                        consensus_timestamp:
+                          type: string
+                        message:
+                          type: string
+  /topics/{topicId}/messages/{sequenceNumber}:
+    get:
+      operationId: fetchTopicMessageBySequence
+      summary: Retrieve a specific message from a topic by sequence number.
+      description: Fetches a single message from a topic using its sequence number on the Hedera network.
+      parameters:
+        - name: topicId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: sequenceNumber
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Topic message details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sequence_number:
+                    type: integer
+                  consensus_timestamp:
+                    type: string
+                  message:
+                    type: string
+  /topics/{topicId}/messages/{consensusTimestamp}:
+    get:
+      operationId: fetchTopicMessageByTimestamp
+      summary: Retrieve a topic message by consensus timestamp.
+      description: Retrieves a specific message from a topic using its consensus timestamp on the Hedera network.
+      parameters:
+        - name: topicId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: consensusTimestamp
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Topic message details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sequence_number:
+                    type: integer
+                  consensus_timestamp:
+                    type: string
+                  message:
+                    type: string
+  /transactions:
+    get:
+      operationId: fetchBlockchainTransactions
+      summary: Retrieve a list of blockchain transactions.
+      description: Fetches a list of recent transactions on the Hedera network.
+      responses:
+        "200":
+          description: List of blockchain transactions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transactions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        transaction_id:
+                          type: string
+                        consensus_timestamp:
+                          type: string
+                        transaction_type:
+                          type: string
+                        amount:
+                          type: integer
+                        sender:
+                          type: string
+                        receiver:
+                          type: string
+  /transactions/{id}:
+    get:
+      operationId: fetchTransactionDetails
+      summary: Retrieve details of a blockchain transaction.
+      description: Fetches metadata and details for a specific transaction on the Hedera network using its transaction ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Transaction details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transaction_id:
+                    type: string
+                  consensus_timestamp:
+                    type: string
+                  transaction_type:
+                    type: string
+                  amount:
+                    type: integer
+                  sender:
+                    type: string
+                  receiver:
+                    type: string
