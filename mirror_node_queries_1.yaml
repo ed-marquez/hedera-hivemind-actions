@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Hedera Mirror Node API
-  description: API for retrieving public blockchain data from the Hedera network.
+  description: API for retrieving public blockchain data from the Hedera network. Includes endpoints for accounts, tokens, topics, transactions, blocks, schedules, network.
   version: 1.0.1
 servers:
   - url: https://mainnet-public.mirrornode.hedera.com/api/v1
@@ -257,28 +257,6 @@ paths:
                         token_id:
                           type: string
                         serial_number:
-                          type: integer
-  /balances:
-    get:
-      operationId: fetchBlockchainBalances
-      summary: Retrieve account balances.
-      description: Fetches current blockchain account balances from the Hedera network.
-      responses:
-        "200":
-          description: List of blockchain account balances.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  balances:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        account:
-                          type: string
-                        balance:
                           type: integer
   /tokens:
     get:
@@ -722,3 +700,121 @@ paths:
                     type: string
                   transaction_body:
                     type: object
+  /network/supply:
+    get:
+      operationId: fetchHbarSupply
+      summary: Retrieve the current total supply of HBAR.
+      description: Fetches the latest total supply of HBAR on the Hedera network.
+      responses:
+        "200":
+          description: Current HBAR supply.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_supply:
+                    type: integer
+  /network/fees:
+    get:
+      operationId: fetchTransactionFees
+      summary: Retrieve the latest transaction fee schedules.
+      description: Fetches the most recent transaction fees applicable on the Hedera network.
+      responses:
+        "200":
+          description: Latest transaction fees.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fees:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        transaction_type:
+                          type: string
+                        node_fee:
+                          type: integer
+                        network_fee:
+                          type: integer
+                        service_fee:
+                          type: integer
+  /network/exchangerate:
+    get:
+      operationId: fetchExchangeRate
+      summary: Retrieve current exchange rates.
+      description: Fetches exchange rates for converting HBAR to USD and other currencies to estimate transaction costs.
+      responses:
+        "200":
+          description: Exchange rate details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  current_rate:
+                    type: object
+                    properties:
+                      hbar_to_usd:
+                        type: number
+                      cents_per_hbar:
+                        type: integer
+                  next_rate:
+                    type: object
+                    properties:
+                      hbar_to_usd:
+                        type: number
+                      cents_per_hbar:
+                        type: integer
+  /network/nodes:
+    get:
+      operationId: listNetworkNodes
+      summary: Retrieve a list of network nodes.
+      description: Fetches the list of active nodes in the Hedera network address book.
+      responses:
+        "200":
+          description: List of network nodes.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nodes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        node_id:
+                          type: string
+                        account_id:
+                          type: string
+                        address:
+                          type: string
+                        port:
+                          type: integer
+  /network/stake:
+    get:
+      operationId: fetchStakingInfo
+      summary: Retrieve staking-related information.
+      description: Fetches data related to staking, including node staking rewards and staked amounts.
+      responses:
+        "200":
+          description: Staking information.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  staking:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        node_id:
+                          type: string
+                        staked_amount:
+                          type: integer
+                        reward_rate:
+                          type: number

@@ -1,0 +1,37 @@
+openapi: 3.1.0
+info:
+  title: Hedera Mirror Node API
+  description: API for retrieving public blockchain data from the Hedera network. Includes endpoints for balances and contracts.
+  version: 1.0.1
+servers:
+  - url: https://mainnet-public.mirrornode.hedera.com/api/v1
+    description: Hedera Mirror Node Mainnet API
+paths:
+  /balances:
+    get:
+      operationId: fetchBlockchainBalances
+      summary: Retrieve account balances.
+      description: Fetches current blockchain account balances from the Hedera network.
+      responses:
+        "200":
+          description: List of blockchain account balances.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balances:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        account:
+                          type: string
+                        balance:
+                          type: integer
+# TBC
+# GPT actions only support 30 operations per API
+# Need to split the operations into two separate actions
+# The first action implements 30 operations
+# The second action (this one) implements the remaining operations
+# Need to add a new domain URL for the CONTRACTS and BALANCES endpoints
