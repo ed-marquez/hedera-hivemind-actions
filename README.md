@@ -66,6 +66,33 @@ The `mirror_node_queries.yaml` file defines the API endpoints for interacting wi
 - **/transactions/{id}**
   - **GET**: Retrieve details of a blockchain transaction.
 
+### Blocks
+
+- **/blocks**
+  - **GET**: Retrieve a list of blocks on the network.
+- **/blocks/{hash_or_number}**
+  - **GET**: Retrieve details of a specific block.
+
+### Schedules
+
+- **/schedules**
+  - **GET**: Retrieve a list of scheduled transactions.
+- **/schedules/{id}**
+  - **GET**: Retrieve details of a scheduled transaction.
+
+### Network
+
+- **/network/supply**
+  - **GET**: Retrieve the current total supply of HBAR.
+- **/network/fees**
+  - **GET**: Retrieve the latest transaction fee schedules.
+- **/network/exchangerate**
+  - **GET**: Retrieve current exchange rates.
+- **/network/nodes**
+  - **GET**: Retrieve a list of network nodes.
+- **/network/stake**
+  - **GET**: Retrieve staking-related information.
+
 ## Description
 
 Each endpoint is designed to fetch specific data from the Hedera network. For example, you can retrieve details about tokens, NFTs, account balances, and transaction histories. The API uses standard HTTP methods and returns data in JSON format.
