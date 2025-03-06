@@ -614,3 +614,111 @@ paths:
                     type: string
                   receiver:
                     type: string
+  /blocks:
+    get:
+      operationId: listBlockchainBlocks
+      summary: Retrieve a list of blocks on the network.
+      description: Fetches a list of blocks on the Hedera network.
+      responses:
+        "200":
+          description: A list of blockchain blocks.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  blocks:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        number:
+                          type: integer
+                        hash:
+                          type: string
+                        timestamp:
+                          type: string
+  /blocks/{hash_or_number}:
+    get:
+      operationId: fetchBlockDetails
+      summary: Retrieve details of a specific block.
+      description: Fetches details of a specific block by its hash or block number.
+      parameters:
+        - name: hash_or_number
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Block details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  number:
+                    type: integer
+                  hash:
+                    type: string
+                  timestamp:
+                    type: string
+                  transactions:
+                    type: array
+                    items:
+                      type: string
+  /schedules:
+    get:
+      operationId: listScheduledTransactions
+      summary: Retrieve a list of scheduled transactions.
+      description: Fetches a list of scheduled transactions on the Hedera network.
+      responses:
+        "200":
+          description: A list of scheduled transactions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  schedules:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        schedule_id:
+                          type: string
+                        creator_account:
+                          type: string
+                        executed:
+                          type: boolean
+                        scheduled_timestamp:
+                          type: string
+  /schedules/{id}:
+    get:
+      operationId: fetchScheduledTransactionDetails
+      summary: Retrieve details of a scheduled transaction.
+      description: Fetches details of a specific scheduled transaction by ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Scheduled transaction details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  schedule_id:
+                    type: string
+                  creator_account:
+                    type: string
+                  executed:
+                    type: boolean
+                  scheduled_timestamp:
+                    type: string
+                  transaction_body:
+                    type: object
