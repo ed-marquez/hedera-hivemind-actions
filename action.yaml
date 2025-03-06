@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Hedera Mirror Node API
-  description: API for retrieving public blockchain data from the Hedera Hashgraph network.
+  description: API for retrieving public blockchain data from the Hedera network.
   version: 1.0.1
 servers:
   - url: https://mainnet-public.mirrornode.hedera.com/api/v1
