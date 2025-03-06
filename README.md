@@ -1,6 +1,6 @@
 ## Hedera Mirror Node API
 
-The `action.yaml` file defines the API endpoints for interacting with the Hedera Mirror Node. This API allows you to retrieve public blockchain data from the Hedera Hashgraph network. Below is a summary of the endpoints available:
+The `mirror_node_queries.yaml` file defines the API endpoints for interacting with the Hedera Mirror Node. This API allows you to retrieve public blockchain data from the Hedera Hashgraph network. Below is a summary of the endpoints available:
 
 ## Endpoints
 
