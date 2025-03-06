@@ -1,0 +1,264 @@
+openapi: 3.1.0
+info:
+  title: Hedera Mirror Node API
+  description: API for retrieving public blockchain data from the Hedera Hashgraph network.
+  version: 1.0.1
+servers:
+  - url: https://mainnet-public.mirrornode.hedera.com/api/v1
+    description: Hedera Mirror Node Mainnet API
+paths:
+  /accounts:
+    get:
+      operationId: listBlockchainAccounts
+      summary: Retrieve a list of blockchain accounts.
+      description: Fetches a list of blockchain accounts on the Hedera network.
+      responses:
+        "200":
+          description: A list of blockchain accounts.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accounts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        account:
+                          type: string
+                        balance:
+                          type: integer
+  /accounts/{idOrAliasOrEvmAddress}:
+    get:
+      operationId: fetchBlockchainAccountInfo
+      summary: Retrieve public information about a blockchain account.
+      description: Fetches general information for a blockchain account on the Hedera network.
+      parameters:
+        - name: idOrAliasOrEvmAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Public account details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  account:
+                    type: string
+                  balance:
+                    type: integer
+                  evm_address:
+                    type: string
+                  alias:
+                    type: string
+  /accounts/{idOrAliasOrEvmAddress}/allowances/crypto:
+    get:
+      operationId: fetchHbarAllowances
+      summary: Retrieve granted HBAR allowances.
+      description: Retrieves information about HBAR allowances granted by an account.
+      parameters:
+        - name: idOrAliasOrEvmAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of HBAR allowances.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  allowances:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        spender:
+                          type: string
+                        amount:
+                          type: integer
+  /accounts/{idOrAliasOrEvmAddress}/rewards:
+    get:
+      operationId: fetchStakingRewards
+      summary: Retrieve staking rewards history.
+      description: Fetches past staking rewards payouts for a blockchain account.
+      parameters:
+        - name: idOrAliasOrEvmAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of past staking rewards.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rewards:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        amount:
+                          type: integer
+                        timestamp:
+                          type: string
+  /balances:
+    get:
+      operationId: fetchBlockchainBalances
+      summary: Retrieve account balances.
+      description: Fetches current blockchain account balances from the Hedera network.
+      responses:
+        "200":
+          description: List of blockchain account balances.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balances:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        account:
+                          type: string
+                        balance:
+                          type: integer
+  /tokens:
+    get:
+      operationId: listBlockchainTokens
+      summary: Retrieve a list of tokens.
+      description: Fetches a list of all tokens on the Hedera network.
+      responses:
+        "200":
+          description: List of blockchain tokens.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tokens:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        token_id:
+                          type: string
+                        name:
+                          type: string
+                        symbol:
+                          type: string
+  /tokens/{id}:
+    get:
+      operationId: fetchTokenInfo
+      summary: Retrieve details of a token.
+      description: Fetches metadata and details for a specific token by its ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Token details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token_id:
+                    type: string
+                  name:
+                    type: string
+                  symbol:
+                    type: string
+                  total_supply:
+                    type: integer
+  /tokens/nfts:
+    get:
+      operationId: listBlockchainNfts
+      summary: Retrieve a list of NFTs.
+      description: Fetches a list of all NFTs available on the Hedera network.
+      responses:
+        "200":
+          description: List of NFTs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nfts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        token_id:
+                          type: string
+                        serial_number:
+                          type: integer
+  /tokens/nfts/{serialNumber}:
+    get:
+      operationId: fetchNftDetails
+      summary: Retrieve NFT details.
+      description: Fetches metadata and details for a specific NFT by serial number.
+      parameters:
+        - name: serialNumber
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: NFT details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token_id:
+                    type: string
+                  serial_number:
+                    type: integer
+                  metadata:
+                    type: string
+  /tokens/nfts/{id}/transactions:
+    get:
+      operationId: fetchNftTransactions
+      summary: Retrieve NFT transaction history.
+      description: Fetches the transaction history for a specific NFT on the blockchain.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of NFT transactions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transactions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        transaction_id:
+                          type: string
+                        timestamp:
+                          type: string
+                        type:
+                          type: string
