@@ -1013,7 +1013,7 @@ externalDocs:
 servers:
   - description: The production REST API servers
     # url: "{scheme}://{network}.mirrornode.hedera.com"
-    url: https://mainnet-public.mirrornode.hedera.com
+    url: https://mainnet.hedera.validationcloud.io/v1/9jkKToWn2tJsnOhwHdNxDlJS1GJK7XingxzCJRKHEAg
     variables:
       scheme:
         default: https
