@@ -4,7 +4,7 @@ info:
   description: API for retrieving public blockchain data from the Hedera network. Includes endpoints for balances and contracts.
   version: 1.0.1
 servers:
-  - url: https://mainnet-public.mirrornode.hedera.com/api/v1
+  - url: https://mainnet.hedera.validationcloud.io/v1/9jkKToWn2tJsnOhwHdNxDlJS1GJK7XingxzCJRKHEAg/api/v1
     description: Hedera Mirror Node Mainnet API
 paths:
   /balances:
@@ -29,9 +29,354 @@ paths:
                           type: string
                         balance:
                           type: integer
-# TBC
-# GPT actions only support 30 operations per API
-# Need to split the operations into two separate actions
-# The first action implements 30 operations
-# The second action (this one) implements the remaining operations
-# Need to add a new domain URL for the CONTRACTS and BALANCES endpoints
+  /contracts:
+    get:
+      operationId: fetchContracts
+      summary: Retrieve a list of smart contracts.
+      description: Fetches a list of smart contract entities deployed on the Hedera network.
+      responses:
+        "200":
+          description: List of smart contracts.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contracts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        contract_id:
+                          type: string
+                        evm_address:
+                          type: string
+                        created_timestamp:
+                          type: string
+                          format: date-time
+  /contracts/{contractIdOrAddress}:
+    get:
+      operationId: fetchContractDetails
+      summary: Retrieve contract details.
+      description: Fetches details of a specific smart contract using its contract ID or EVM address.
+      parameters:
+        - name: contractIdOrAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Smart contract details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contract_id:
+                    type: string
+                  evm_address:
+                    type: string
+                  admin_key:
+                    type: string
+                  expiration_timestamp:
+                    type: string
+                    format: date-time
+  /contracts/results/{transactionIdOrHash}:
+    get:
+      operationId: fetchContractExecutionResult
+      summary: Retrieve execution results for a contract transaction.
+      description: Fetches execution results for a specific contract transaction using its transaction ID or transaction hash.
+      parameters:
+        - name: transactionIdOrHash
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Contract execution results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transaction_id:
+                    type: string
+                  contract_id:
+                    type: string
+                  result:
+                    type: string
+                  gas_used:
+                    type: integer
+                  logs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        data:
+                          type: string
+                        topics:
+                          type: array
+                          items:
+                            type: string
+  /contracts/{contractIdOrAddress}/results:
+    get:
+      operationId: fetchContractResults
+      summary: Retrieve execution results for a specific contract.
+      description: Fetches execution results for a smart contract identified by contract ID or EVM address.
+      parameters:
+        - name: contractIdOrAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Contract execution results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contract_id:
+                    type: string
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        transaction_id:
+                          type: string
+                        result:
+                          type: string
+                        gas_used:
+                          type: integer
+  /contracts/{id}/state:
+    get:
+      operationId: fetchContractState
+      summary: Retrieve contract state.
+      description: Fetches the current state of a smart contract, including storage values.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Contract state.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contract_id:
+                    type: string
+                  state:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        key:
+                          type: string
+                        value:
+                          type: string
+  /contracts/results:
+    get:
+      operationId: listContractResults
+      summary: Retrieve execution results for all contracts.
+      description: Fetches execution results for all smart contract transactions on the Hedera network.
+      responses:
+        "200":
+          description: List of contract execution results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        transaction_id:
+                          type: string
+                        contract_id:
+                          type: string
+                        result:
+                          type: string
+                        gas_used:
+                          type: integer
+  /contracts/results/{transactionIdOrHash}/results:
+    get:
+      operationId: fetchContractActions
+      summary: Retrieve contract actions by transaction ID or hash.
+      description: Fetches contract execution actions for a given transaction ID or transaction hash.
+      parameters:
+        - name: transactionIdOrHash
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Contract actions for the specified transaction.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transaction_id:
+                    type: string
+                  contract_id:
+                    type: string
+                  actions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        call_type:
+                          type: string
+                        gas_used:
+                          type: integer
+                        from:
+                          type: string
+                        to:
+                          type: string
+                        value:
+                          type: string
+  /contracts/results/{timestamp}:
+    get:
+      operationId: fetchContractResultByTimestamp
+      summary: Retrieve contract execution results by timestamp.
+      description: Fetches execution results for a contract transaction at a specific timestamp.
+      parameters:
+        - name: timestamp
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Contract execution results for the specified timestamp.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transaction_id:
+                    type: string
+                  contract_id:
+                    type: string
+                  result:
+                    type: string
+                  gas_used:
+                    type: integer
+                  logs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        data:
+                          type: string
+                        topics:
+                          type: array
+                          items:
+                            type: string
+  /contracts/logs:
+    get:
+      operationId: listContractLogs
+      summary: Retrieve contract logs.
+      description: Fetches logs emitted by smart contracts on the Hedera network.
+      responses:
+        "200":
+          description: List of contract logs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  logs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        contract_id:
+                          type: string
+                        timestamp:
+                          type: string
+                        data:
+                          type: string
+                        topics:
+                          type: array
+                          items:
+                            type: string
+  /contracts/{id}/results/logs:
+    get:
+      operationId: fetchContractLogs
+      summary: Retrieve logs for a specific contract.
+      description: Fetches logs emitted by a smart contract identified by contract ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Contract logs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contract_id:
+                    type: string
+                  logs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        timestamp:
+                          type: string
+                        data:
+                          type: string
+                        topics:
+                          type: array
+                          items:
+                            type: string
+  /contracts/{id}/results/opcodes:
+    get:
+      operationId: fetchContractOpcodes
+      summary: Retrieve opcode traces for a contract.
+      description: Fetches historical opcode traces for transactions executed on a specific smart contract.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Opcode traces for the specified contract.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contract_id:
+                    type: string
+                  opcodes:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        timestamp:
+                          type: string
+                        transaction_id:
+                          type: string
+                        opcode:
+                          type: string
+                        gas_used:
+                          type: integer
